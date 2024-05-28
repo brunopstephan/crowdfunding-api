@@ -1,0 +1,28 @@
+{
+  "name": "api-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup src",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@avantpro/eslint-config": "^1.1.0",
+    "@types/node": "^20.11.30",
+    "eslint": "^8.57.0",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2",
+    "vitest": "^1.4.0"
+  },
+  "dependencies": {
+    "fastify": "^4.26.2",
+    "zod": "^3.22.4"
+  }
+}
