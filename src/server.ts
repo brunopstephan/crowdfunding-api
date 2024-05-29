@@ -1,14 +1,15 @@
+import { exec } from 'child_process'
 import fastify from 'fastify'
-import { postgres } from './utils'
-import 'dotenv/config'
 
-const app = fastify({ logger: true })
+const app = fastify({
+  logger: true,
+})
 
 async function main() {
-  console.log(await postgres.query('SELECT NOW()'))
-
   try {
     await app.listen({ port: 9000 }).then(() => {
+      //cleaning console like nest :3
+      exec('cls')
       console.log('Server is running on port 9000...')
     })
   } catch (err) {

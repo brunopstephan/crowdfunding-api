@@ -1,5 +1,5 @@
-import {expect, test} from 'vitest'
+import { expect, test } from 'vitest'
 
 test('example', () => {
-    expect(1 + 1).toEqual(2)
+  expect(1 + 1).toEqual(2)
 })

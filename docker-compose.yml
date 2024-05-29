@@ -6,11 +6,11 @@ services:
         ports:
             - "5432:5432"
         environment:
-            - POSTGRES_USER=Bruno Piffer
+            - POSTGRES_USER=docker
             - POSTGRES_PASSWORD=docker
             - POSTGRES_DB=docker
         volumes:
             - docker-learning:/bitnami/postgresql
 
 volumes:
-    docker-learning:     
+    docker-learning:  
