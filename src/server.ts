@@ -1,3 +1,4 @@
+import { clear } from 'console'
 import fastify from 'fastify'
 
 const app = fastify({ logger: true })
@@ -5,6 +6,7 @@ const app = fastify({ logger: true })
 async function main() {
   try {
     await app.listen({ port: 9000 }).then(() => {
+      clear()
       console.log('Server is running on port 9000...')
     })
   } catch (err) {
