@@ -4,31 +4,6 @@ import { receiverRoutes } from './core'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
 
-/* function Logger(...args) {
-  this.args = args
-}
-Logger.prototype.info = function (msg: string) {
-  console.log('INFO', msg)
-}
-Logger.prototype.error = function (msg: string) {
-  console.log('ERROR', msg)
-}
-Logger.prototype.debug = function (msg: string) {
-  console.log('DEBUG', msg)
-}
-Logger.prototype.fatal = function (msg: string) {
-  console.log('FATAL', msg)
-}
-Logger.prototype.warn = function (msg: string) {
-  console.log('WARN', msg)
-}
-Logger.prototype.trace = function (msg: string) {
-  console.log('TRACE', msg)
-}
-Logger.prototype.child = function () {
-  return new Logger()
-}
- */
 const app = fastify({
   logger: true,
 })
