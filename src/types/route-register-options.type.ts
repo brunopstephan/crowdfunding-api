@@ -1,6 +1,5 @@
-import { Pool } from 'pg'
-
+import { Postgres } from '@/utils'
 export type RouteRegisterOptions = {
   prefix: string
-  db?: Pool
+  db?: Postgres
 }

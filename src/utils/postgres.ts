@@ -9,3 +9,5 @@ export const postgres = new Pool({
   password: String(process.env.POSTGRES_PASSWORD),
   database: process.env.POSTGRES_DB,
 })
+
+export type Postgres = typeof postgres

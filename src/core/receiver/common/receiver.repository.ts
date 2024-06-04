@@ -1,17 +1,17 @@
-import { Pool } from 'pg'
+import { Postgres } from '@/utils'
 
 export class ReceiverRepository {
-  constructor(private readonly postgres: Pool) {}
+  constructor(private readonly db: Postgres) {}
 
-  async getReceiver() {
+  async findMany() {
     return { hello: 'world' }
   }
 
-  async getReceiverById() {}
+  async findOne() {}
 
-  async createReceiver() {}
+  async create() {}
 
-  async updateReceiver() {}
+  async update() {}
 
-  async deleteReceiver() {}
+  async delete() {}
 }
