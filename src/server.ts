@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import { ZodError } from 'zod'
-import { receiverRoutes } from './core'
+import { receiverController } from './core'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
 
@@ -20,7 +20,7 @@ async function main() {
     reply.status(error.statusCode).send(error)
   })
 
-  app.register(receiverRoutes, {
+  app.register(receiverController, {
     prefix: '/receiver',
     db: postgres,
   } as RouteRegisterOptions)
