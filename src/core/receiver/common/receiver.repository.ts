@@ -1,5 +1,5 @@
 import { Receiver } from '@/schemas'
-import { Postgres, uuid } from '@/utils'
+import { Postgres } from '@/utils'
 import { ReceiverCreateDto, ReceiverUpdateDto } from './receiver.dto'
 
 export class ReceiverRepository {
@@ -22,8 +22,8 @@ export class ReceiverRepository {
 
   async create({ name }: ReceiverCreateDto) {
     return await this.db.query<Receiver>(
-      'INSERT INTO receiver (id, name) VALUES ($1, $2) RETURNING *',
-      [uuid(), name],
+      'INSERT INTO receiver (name) VALUES ($1) RETURNING *',
+      [name],
     )
   }
 
