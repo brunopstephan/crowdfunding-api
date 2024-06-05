@@ -8,24 +8,29 @@ export function receiverController(
   opts: RouteRegisterOptions,
   done: any,
 ) {
-  const repository = new ReceiverRepository(opts.db)
-  const {
-    getReceiver,
-    getReceiverById,
-    createReceiver,
-    updateReceiver,
-    deleteReceiver,
-  } = new ReceiverService(repository)
+  const receiverRepository = new ReceiverRepository(opts.db)
 
-  fastify.get('/', getReceiver)
+  const receiverService = new ReceiverService(receiverRepository)
 
-  fastify.get('/:id', getReceiverById)
+  fastify.get('/', async (request, reply) => {
+    return await receiverService.getReceiver(request, reply)
+  })
 
-  fastify.post('/', createReceiver)
+  fastify.get('/:id', async (request, reply) => {
+    return await receiverService.getReceiverById(request, reply)
+  })
 
-  fastify.put('/', updateReceiver)
+  fastify.post('/', async (request, reply) => {
+    return await receiverService.createReceiver(request, reply)
+  })
 
-  fastify.delete('/:id', deleteReceiver)
+  fastify.put('/', async (request, reply) => {
+    return await receiverService.updateReceiver(request, reply)
+  })
+
+  fastify.delete('/:id', async (request, reply) => {
+    return await receiverService.deleteReceiver(request, reply)
+  })
 
   done()
 }
