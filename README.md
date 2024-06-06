@@ -9,4 +9,6 @@
 
 ## Usage
 
-- TODO: add swagger
+- After started the project, access [http://localhost:9000/docs](http://localhost:9000/docs) and you must have access at the routes:
+
+![image](https://github.com/brunopstephan/crowdfunding-api/assets/101269702/3e52027a-300b-45e7-b5d6-6875b5c1bbe8)
