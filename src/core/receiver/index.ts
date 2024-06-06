@@ -12,23 +12,23 @@ export function receiverController(
 
   const receiverService = new ReceiverService(receiverRepository)
 
-  fastify.get('/', async (request, reply) => {
+  fastify.get('/', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.getReceiver(request, reply)
   })
 
-  fastify.get('/:id', async (request, reply) => {
+  fastify.get('/:id', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.getReceiverById(request, reply)
   })
 
-  fastify.post('/', async (request, reply) => {
+  fastify.post('/', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.createReceiver(request, reply)
   })
 
-  fastify.put('/', async (request, reply) => {
+  fastify.put('/', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.updateReceiver(request, reply)
   })
 
-  fastify.delete('/:id', async (request, reply) => {
+  fastify.delete('/:id', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.deleteReceiver(request, reply)
   })
 

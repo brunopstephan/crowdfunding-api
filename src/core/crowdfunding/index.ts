@@ -12,23 +12,23 @@ export function crowdfundingController(
 
   const crowdfundingService = new CrowdfundingService(crowdfundingRepository)
 
-  fastify.get('/', async (request, reply) => {
+  fastify.get('/', opts.docBaseOptions, async (request, reply) => {
     return await crowdfundingService.getCrowdfunding(request, reply)
   })
 
-  fastify.get('/:id', async (request, reply) => {
+  fastify.get('/:id', opts.docBaseOptions, async (request, reply) => {
     return await crowdfundingService.getCrowdfundingById(request, reply)
   })
 
-  fastify.post('/', async (request, reply) => {
+  fastify.post('/', opts.docBaseOptions, async (request, reply) => {
     return await crowdfundingService.createCrowdfunding(request, reply)
   })
 
-  fastify.put('/', async (request, reply) => {
+  fastify.put('/', opts.docBaseOptions, async (request, reply) => {
     return await crowdfundingService.updateCrowdfunding(request, reply)
   })
 
-  fastify.delete('/:id', async (request, reply) => {
+  fastify.delete('/:id', opts.docBaseOptions, async (request, reply) => {
     return await crowdfundingService.deleteCrowdfunding(request, reply)
   })
 
