@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import { ZodError } from 'zod'
-import { receiverController } from './core'
+import { crowdfundingController, receiverController } from './core'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
 
@@ -22,6 +22,10 @@ async function main() {
 
   app.register(receiverController, {
     prefix: '/receiver',
+    db: postgres,
+  } as RouteRegisterOptions)
+  app.register(crowdfundingController, {
+    prefix: '/crowdfunding',
     db: postgres,
   } as RouteRegisterOptions)
 
