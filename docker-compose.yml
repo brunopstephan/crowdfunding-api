@@ -1,16 +1,17 @@
-version: '3.7'
-
 services:
-    postgres:
-        image: bitnami/postgresql:latest
+    crowdfunding-postgres:
+        container_name: crowdfunding-postgres
+        build: .
+        image: crowdfunding-postgres:v1
         ports:
             - "5432:5432"
         environment:
             - POSTGRES_USER=docker
             - POSTGRES_PASSWORD=docker
-            - POSTGRES_DB=docker
+            - POSTGRES_DB=crowdfunding
         volumes:
-            - docker-learning:/bitnami/postgresql
+            - crowdfunding:/bitnami/postgresql
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
-    docker-learning:  
+    crowdfunding:  
