@@ -1,4 +1,4 @@
-import { Crowdfunding } from '@/schemas'
+import { Crowdfunding, Receiver } from '@/schemas'
 import { Postgres } from '@/utils'
 import {
   CrowdfundingCreateDto,
@@ -31,10 +31,24 @@ export class CrowdfundingRepository {
     goal,
     receiver_id,
   }: CrowdfundingCreateDto) {
-    return await this.db.query<Crowdfunding>(
-      'INSERT INTO crowdfunding (receiver_id, title, description, goal) VALUES ($1, $2, $3, $4) RETURNING *',
-      [receiver_id, title, description, goal],
+    const {
+      rows: [{ crowdfundings_limit: receiverLimit }],
+    } = await this.db.query<Receiver>(
+      'SELECT crowdfundings_limit FROM receiver WHERE id = $1',
+      [receiver_id],
     )
+
+    if (!receiverLimit)
+      throw new Error('Receiver has reached the limit of crowdfundings (5)')
+
+    return await this.db
+      .query<Crowdfunding>(
+        'INSERT INTO crowdfunding (receiver_id, title, description, goal) VALUES ($1, $2, $3, $4) RETURNING *',
+        [receiver_id, title, description, goal],
+      )
+      .catch((_) => {
+        throw new Error('Error creating crowdfunding')
+      })
   }
 
   async update({ id, description, goal, title }: CrowdfundingUpdateDto) {

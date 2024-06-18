@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { ReceiverRepository } from './common'
 import { ReceiverService } from './receiver.service'
 
-export function receiverController(
+export function ReceiverController(
   fastify: FastifyInstance,
   opts: RouteRegisterOptions,
   done: any,

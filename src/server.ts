@@ -2,7 +2,8 @@ import fastify from 'fastify'
 import { ZodError } from 'zod'
 import FastifySwagger from '@fastify/swagger'
 import FastifySwaggerUI from '@fastify/swagger-ui'
-import { crowdfundingController, receiverController } from './core'
+import { CrowdfundingController, ReceiverController } from './core'
+import { DepositController } from './core/deposit'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
 
@@ -48,7 +49,7 @@ async function main() {
   app.register(FastifySwagger, swaggerOptions)
   app.register(FastifySwaggerUI, swaggerUiOptions)
 
-  app.register(receiverController, {
+  app.register(ReceiverController, {
     prefix: '/receiver',
     db: postgres,
     docBaseOptions: {
@@ -57,12 +58,21 @@ async function main() {
       },
     },
   } as RouteRegisterOptions)
-  app.register(crowdfundingController, {
+  app.register(CrowdfundingController, {
     prefix: '/crowdfunding',
     db: postgres,
     docBaseOptions: {
       schema: {
         tags: ['crowdfunding'],
+      },
+    },
+  } as RouteRegisterOptions)
+  app.register(DepositController, {
+    prefix: '/deposit',
+    db: postgres,
+    docBaseOptions: {
+      schema: {
+        tags: ['deposit'],
       },
     },
   } as RouteRegisterOptions)
