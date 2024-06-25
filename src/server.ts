@@ -4,6 +4,7 @@ import FastifySwagger from '@fastify/swagger'
 import FastifySwaggerUI from '@fastify/swagger-ui'
 import { CrowdfundingController, ReceiverController } from './core'
 import { DepositController } from './core/deposit'
+import { registerCrons } from './tasks'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
 
@@ -76,6 +77,8 @@ async function main() {
       },
     },
   } as RouteRegisterOptions)
+
+  registerCrons(postgres)
 
   try {
     await app.listen({ port: 9000 }).then(() => {

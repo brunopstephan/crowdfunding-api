@@ -15,6 +15,7 @@
   "devDependencies": {
     "@avantpro/eslint-config": "^1.1.0",
     "@types/node": "^20.11.30",
+    "@types/node-cron": "^3.0.11",
     "eslint": "^8.57.0",
     "tsup": "^8.0.2",
     "tsx": "^4.7.1",
@@ -27,6 +28,7 @@
     "@types/pg": "^8.11.6",
     "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
+    "node-cron": "^3.0.3",
     "pg": "^8.11.5",
     "zod": "^3.22.4"
   }

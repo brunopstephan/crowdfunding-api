@@ -9,6 +9,34 @@ export const crowdfundingCreateDtoSchema = z.object({
     required_error: 'title is required in body data',
     invalid_type_error: 'title must be a string',
   }),
+  expire_at: z
+    .string({
+      invalid_type_error: 'expire_at must be a string',
+    })
+    .nullable()
+    .optional()
+    .superRefine((data, ctx) => {
+      if (!data) return true
+
+      if (isNaN(new Date(data).getTime())) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'expire_at must be a valid date',
+        })
+        return false
+      }
+
+      if (new Date(data) < new Date()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'expire_at must be a future date',
+        })
+        return false
+      }
+
+      return true
+    })
+    .transform((data) => (data ? new Date(data) : null)),
   goal: z
     .number({
       invalid_type_error: 'goal must be a number',

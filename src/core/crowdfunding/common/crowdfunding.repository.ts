@@ -1,5 +1,5 @@
 import { Crowdfunding, Receiver } from '@/schemas'
-import { Postgres } from '@/utils'
+import { Postgres, queryGenerator } from '@/utils'
 import {
   CrowdfundingCreateDto,
   CrowdfundingUpdateDto,
@@ -25,26 +25,23 @@ export class CrowdfundingRepository {
     return data
   }
 
-  async create({
-    title,
-    description,
-    goal,
-    receiver_id,
-  }: CrowdfundingCreateDto) {
+  async create(data: CrowdfundingCreateDto) {
     const {
       rows: [{ crowdfundings_limit: receiverLimit }],
     } = await this.db.query<Receiver>(
       'SELECT crowdfundings_limit FROM receiver WHERE id = $1',
-      [receiver_id],
+      [data.receiver_id],
     )
 
     if (!receiverLimit)
       throw new Error('Receiver has reached the limit of crowdfundings (5)')
 
+    const { dataArr, fields, values } = queryGenerator(data)
+
     return await this.db
       .query<Crowdfunding>(
-        'INSERT INTO crowdfunding (receiver_id, title, description, goal) VALUES ($1, $2, $3, $4) RETURNING *',
-        [receiver_id, title, description, goal],
+        `INSERT INTO crowdfunding (${fields}) VALUES (${values}) RETURNING *`,
+        dataArr,
       )
       .catch((_) => {
         throw new Error('Error creating crowdfunding')

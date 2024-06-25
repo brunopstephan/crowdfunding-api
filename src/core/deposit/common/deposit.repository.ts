@@ -1,4 +1,4 @@
-import { Deposit } from '@/schemas'
+import { Crowdfunding, Deposit } from '@/schemas'
 import { Postgres } from '@/utils'
 import { DepositCreateDto } from './deposit.dto'
 
@@ -21,6 +21,15 @@ export class DepositRepository {
   }
 
   async create({ amount, crowdfunding_id, payer }: DepositCreateDto) {
+    const {
+      rows: [{ closed: isCrowdfundingClosed }],
+    } = await this.db.query<Crowdfunding>(
+      'SELECT closed FROM crowdfunding WHERE id = $1',
+      [crowdfunding_id],
+    )
+
+    if (isCrowdfundingClosed) throw new Error('Crowdfunding is closed')
+
     return await this.db.query<Deposit>(
       'INSERT INTO deposit (amount, crowdfunding_id, payer) VALUES ($1, $2, $3) RETURNING *',
       [amount, crowdfunding_id, payer],

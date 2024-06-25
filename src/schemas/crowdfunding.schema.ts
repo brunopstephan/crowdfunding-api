@@ -8,6 +8,8 @@ export const crowdfundingSchema = z.object({
   total_amount: z.number(),
   created_at: z.string(),
   updated_at: z.string(),
+  expire_at: z.string(),
+  closed: z.boolean(),
 })
 
 export type Crowdfunding = z.infer<typeof crowdfundingSchema>
