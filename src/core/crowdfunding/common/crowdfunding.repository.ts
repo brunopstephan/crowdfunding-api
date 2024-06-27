@@ -26,14 +26,16 @@ export class CrowdfundingRepository {
   }
 
   async create(data: CrowdfundingCreateDto) {
-    const {
-      rows: [{ crowdfundings_limit: receiverLimit }],
-    } = await this.db.query<Receiver>(
+    const { rows } = await this.db.query<Receiver>(
       'SELECT crowdfundings_limit FROM receiver WHERE id = $1',
       [data.receiver_id],
     )
 
-    if (!receiverLimit)
+    if (rows.length === 0) throw new Error('Receiver not found')
+
+    const receiverLimit = rows[0].crowdfundings_limit
+
+    if (receiverLimit === 0)
       throw new Error('Receiver has reached the limit of crowdfundings (5)')
 
     const { dataArr, fields, values } = queryGenerator(data)

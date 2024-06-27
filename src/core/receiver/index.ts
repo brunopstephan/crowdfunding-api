@@ -20,13 +20,46 @@ export function ReceiverController(
     return await receiverService.getReceiverById(request, reply)
   })
 
-  fastify.post('/', opts.docBaseOptions, async (request, reply) => {
-    return await receiverService.createReceiver(request, reply)
-  })
+  fastify.post(
+    '/',
+    {
+      ...opts.docBaseOptions,
+      schema: {
+        ...opts.docBaseOptions.schema,
+        body: {
+          type: 'object',
+          required: ['name'],
+          properties: {
+            name: { type: 'string' },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      return await receiverService.createReceiver(request, reply)
+    },
+  )
 
-  fastify.put('/', opts.docBaseOptions, async (request, reply) => {
-    return await receiverService.updateReceiver(request, reply)
-  })
+  fastify.put(
+    '/',
+    {
+      ...opts.docBaseOptions,
+      schema: {
+        ...opts.docBaseOptions.schema,
+        body: {
+          type: 'object',
+          required: ['id', 'name'],
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      return await receiverService.updateReceiver(request, reply)
+    },
+  )
 
   fastify.delete('/:id', opts.docBaseOptions, async (request, reply) => {
     return await receiverService.deleteReceiver(request, reply)
