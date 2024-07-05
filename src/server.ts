@@ -32,8 +32,10 @@ const swaggerOptions = {
     consumes: ['application/json'],
     produces: ['application/json'],
     tags: [
+      { name: 'auth', description: 'auth routes' },
       { name: 'receiver', description: 'receiver routes' },
       { name: 'crowdfunding', description: 'crowdfunding routes' },
+      { name: 'deposit', description: 'deposit routes' },
     ],
   },
 }
