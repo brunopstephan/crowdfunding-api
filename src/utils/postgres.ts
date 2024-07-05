@@ -1,13 +1,12 @@
+import { config } from '@/config'
 import { Pool } from 'pg'
 
-import 'dotenv/config'
-
 export const postgres = new Pool({
-  host: process.env.POSTGRES_HOST,
-  port: parseInt(process.env.POSTGRES_PORT),
-  user: String(process.env.POSTGRES_USER),
-  password: String(process.env.POSTGRES_PASSWORD),
-  database: process.env.POSTGRES_DB,
+  host: config.db.host,
+  port: parseInt(config.db.port),
+  user: String(config.db.user),
+  password: String(config.db.pwd),
+  database: config.db.name,
 })
 
 export type Postgres = typeof postgres

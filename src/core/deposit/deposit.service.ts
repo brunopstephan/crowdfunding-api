@@ -6,15 +6,8 @@ export class DepositService {
   constructor(private depositRepository: DepositRepository) {}
 
   async getDeposit(_: FastifyRequest, reply: FastifyReply): Promise<Deposit[]> {
-    try {
-      const data = await this.depositRepository.findMany()
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    const data = await this.depositRepository.findMany()
+    return reply.status(200).send(data.rows)
   }
 
   async getDepositById(
@@ -29,32 +22,18 @@ export class DepositService {
         .send({ message: 'id is required in route params' })
     }
 
-    try {
-      const data = await this.depositRepository.findOne(id)
-      if (data.rows.length === 0)
-        return reply.status(404).send({ message: 'Deposit not found' })
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    const data = await this.depositRepository.findOne(id)
+    if (data.rows.length === 0)
+      return reply.status(404).send({ message: 'Deposit not found' })
+    return reply.status(200).send(data.rows)
   }
 
   async createDeposit(request: FastifyRequest, reply: FastifyReply) {
     const body = depositCreateDtoSchema.parse(request.body)
 
-    try {
-      const data = await this.depositRepository.create(body)
+    const data = await this.depositRepository.create(body)
 
-      return reply.status(201).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    return reply.status(201).send(data.rows)
   }
 
   async deleteDeposit(request: FastifyRequest, reply: FastifyReply) {
@@ -66,20 +45,11 @@ export class DepositService {
         .send({ message: 'id is required in route params' })
     }
 
-    try {
-      const data = await this.depositRepository.delete(id)
+    const data = await this.depositRepository.delete(id)
 
-      if (data.rows.length === 0)
-        return reply
-          .status(404)
-          .send({ message: 'Deposit not found to delete' })
+    if (data.rows.length === 0)
+      return reply.status(404).send({ message: 'Deposit not found to delete' })
 
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    return reply.status(200).send(data.rows)
   }
 }

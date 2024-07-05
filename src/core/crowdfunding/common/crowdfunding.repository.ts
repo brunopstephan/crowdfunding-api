@@ -1,3 +1,8 @@
+import {
+  BadRequestExeption,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@/errors'
 import { Crowdfunding, Receiver } from '@/schemas'
 import { Postgres, queryGenerator } from '@/utils'
 import {
@@ -22,6 +27,9 @@ export class CrowdfundingRepository {
       [id],
     )
 
+    if (data.rows.length === 0)
+      throw new NotFoundException('Crowdfunding not found')
+
     return data
   }
 
@@ -31,12 +39,14 @@ export class CrowdfundingRepository {
       [data.receiver_id],
     )
 
-    if (rows.length === 0) throw new Error('Receiver not found')
+    if (rows.length === 0) throw new NotFoundException('Receiver not found')
 
     const receiverLimit = rows[0].crowdfundings_limit
 
     if (receiverLimit === 0)
-      throw new Error('Receiver has reached the limit of crowdfundings (5)')
+      throw new BadRequestExeption(
+        'Receiver has reached the limit of crowdfundings (5)',
+      )
 
     const { dataArr, fields, values } = queryGenerator(data)
 
@@ -46,7 +56,7 @@ export class CrowdfundingRepository {
         dataArr,
       )
       .catch((_) => {
-        throw new Error('Error creating crowdfunding')
+        throw new InternalServerErrorException('Error creating crowdfunding')
       })
   }
 
@@ -66,10 +76,14 @@ export class CrowdfundingRepository {
 
     if (!sets.length) return null
 
-    return await this.db.query<Crowdfunding>(
-      `UPDATE crowdfunding SET ${sets.join(', ')} WHERE id = $1 RETURNING *`,
-      [id],
-    )
+    return await this.db
+      .query<Crowdfunding>(
+        `UPDATE crowdfunding SET ${sets.join(', ')} WHERE id = $1 RETURNING *`,
+        [id],
+      )
+      .catch((_) => {
+        throw new InternalServerErrorException('Error updating crowdfunding')
+      })
   }
 
   async delete(id: string) {

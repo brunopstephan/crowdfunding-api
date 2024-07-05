@@ -13,15 +13,8 @@ export class CrowdfundingService {
     _: FastifyRequest,
     reply: FastifyReply,
   ): Promise<Crowdfunding[]> {
-    try {
-      const data = await this.crowdfundingRepository.findMany()
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    const data = await this.crowdfundingRepository.findMany()
+    return reply.status(200).send(data.rows)
   }
 
   async getCrowdfundingById(
@@ -36,57 +29,33 @@ export class CrowdfundingService {
         .send({ message: 'id is required in route params' })
     }
 
-    try {
-      const data = await this.crowdfundingRepository.findOne(id)
-      if (data.rows.length === 0)
-        return reply.status(404).send({ message: 'Crowdfunding not found' })
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    const data = await this.crowdfundingRepository.findOne(id)
+
+    return reply.status(200).send(data.rows)
   }
 
   async createCrowdfunding(request: FastifyRequest, reply: FastifyReply) {
     const body = crowdfundingCreateDtoSchema.parse(request.body)
 
-    try {
-      const data = await this.crowdfundingRepository.create(body)
+    const data = await this.crowdfundingRepository.create(body)
 
-      return reply.status(201).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    return reply.status(201).send(data.rows)
   }
 
   async updateCrowdfunding(request: FastifyRequest, reply: FastifyReply) {
     const body = crowdfundingUpdateDtoSchema.parse(request.body)
 
-    try {
-      const data = await this.crowdfundingRepository.update(body)
+    const data = await this.crowdfundingRepository.update(body)
 
-      if (data === null)
-        return reply
-          .status(400)
-          .send({ message: 'Nothing to update, aborting.' })
+    if (data === null)
+      return reply.status(400).send({ message: 'Nothing to update, aborting.' })
 
-      if (data.rows.length === 0)
-        return reply
-          .status(404)
-          .send({ message: 'Crowdfunding not found to update' })
+    if (data.rows.length === 0)
+      return reply
+        .status(404)
+        .send({ message: 'Crowdfunding not found to update' })
 
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    return reply.status(200).send(data.rows)
   }
 
   async deleteCrowdfunding(request: FastifyRequest, reply: FastifyReply) {
@@ -98,20 +67,13 @@ export class CrowdfundingService {
         .send({ message: 'id is required in route params' })
     }
 
-    try {
-      const data = await this.crowdfundingRepository.delete(id)
+    const data = await this.crowdfundingRepository.delete(id)
 
-      if (data.rows.length === 0)
-        return reply
-          .status(404)
-          .send({ message: 'Crowdfunding not found to delete' })
+    if (data.rows.length === 0)
+      return reply
+        .status(404)
+        .send({ message: 'Crowdfunding not found to delete' })
 
-      return reply.status(200).send(data.rows)
-    } catch (error) {
-      return reply.status(500).send({
-        message: 'Internal server error',
-        error: error.message,
-      })
-    }
+    return reply.status(200).send(data.rows)
   }
 }

@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { DepositRepository } from './common'
 import { DepositService } from './deposit.service'
 
-export function DepositController(
+export function depositRoutes(
   fastify: FastifyInstance,
   opts: RouteRegisterOptions,
   done: any,

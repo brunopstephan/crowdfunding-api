@@ -1,3 +1,4 @@
+import { BadRequestExeption } from '@/errors'
 import { Crowdfunding, Deposit } from '@/schemas'
 import { Postgres } from '@/utils'
 import { DepositCreateDto } from './deposit.dto'
@@ -28,7 +29,8 @@ export class DepositRepository {
       [crowdfunding_id],
     )
 
-    if (isCrowdfundingClosed) throw new Error('Crowdfunding is closed')
+    if (isCrowdfundingClosed)
+      throw new BadRequestExeption('Crowdfunding is closed')
 
     return await this.db.query<Deposit>(
       'INSERT INTO deposit (amount, crowdfunding_id, payer) VALUES ($1, $2, $3) RETURNING *',

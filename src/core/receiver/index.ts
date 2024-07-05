@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { ReceiverRepository } from './common'
 import { ReceiverService } from './receiver.service'
 
-export function ReceiverController(
+export function receiverRoutes(
   fastify: FastifyInstance,
   opts: RouteRegisterOptions,
   done: any,
@@ -20,7 +20,7 @@ export function ReceiverController(
     return await receiverService.getReceiverById(request, reply)
   })
 
-  fastify.post(
+  /*  fastify.post(
     '/',
     {
       ...opts.docBaseOptions,
@@ -38,7 +38,7 @@ export function ReceiverController(
     async (request, reply) => {
       return await receiverService.createReceiver(request, reply)
     },
-  )
+  ) */
 
   fastify.put(
     '/',

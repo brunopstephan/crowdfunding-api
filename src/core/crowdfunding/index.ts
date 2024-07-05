@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { CrowdfundingRepository } from './common'
 import { CrowdfundingService } from './crowdfunding.service'
 
-export function CrowdfundingController(
+export function crowdfundingRoutes(
   fastify: FastifyInstance,
   opts: RouteRegisterOptions,
   done: any,

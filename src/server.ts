@@ -1,9 +1,16 @@
+import 'dotenv/config'
 import fastify from 'fastify'
 import { ZodError } from 'zod'
+import formbody from '@fastify/formbody'
 import FastifySwagger from '@fastify/swagger'
 import FastifySwaggerUI from '@fastify/swagger-ui'
-import { CrowdfundingController, ReceiverController } from './core'
-import { DepositController } from './core/deposit'
+import {
+  crowdfundingRoutes,
+  depositRoutes,
+  receiverRoutes,
+  authRoutes,
+} from './core'
+import { tokenValidation } from './middlewares'
 import { registerCrons } from './tasks'
 import { RouteRegisterOptions } from './types'
 import { postgres } from './utils'
@@ -36,6 +43,8 @@ const swaggerUiOptions = {
 }
 
 async function main() {
+  app.register(formbody)
+  //register custom error handler for validation errors
   app.setErrorHandler((error, request, reply) => {
     if (error instanceof ZodError) {
       reply.status(400).send({
@@ -47,37 +56,58 @@ async function main() {
     reply.status(error.statusCode).send(error)
   })
 
+  //register swagger config
   app.register(FastifySwagger, swaggerOptions)
   app.register(FastifySwaggerUI, swaggerUiOptions)
 
-  app.register(ReceiverController, {
-    prefix: '/receiver',
+  //register server routes
+  app.register(authRoutes, {
+    prefix: '/auth',
     db: postgres,
     docBaseOptions: {
       schema: {
-        tags: ['receiver'],
-      },
-    },
-  } as RouteRegisterOptions)
-  app.register(CrowdfundingController, {
-    prefix: '/crowdfunding',
-    db: postgres,
-    docBaseOptions: {
-      schema: {
-        tags: ['crowdfunding'],
-      },
-    },
-  } as RouteRegisterOptions)
-  app.register(DepositController, {
-    prefix: '/deposit',
-    db: postgres,
-    docBaseOptions: {
-      schema: {
-        tags: ['deposit'],
+        tags: ['auth'],
       },
     },
   } as RouteRegisterOptions)
 
+  app.register((instance, opts, done) => {
+    if (process.env.ENV === 'production')
+      instance.addHook('preHandler', tokenValidation)
+    instance.register(receiverRoutes, {
+      prefix: '/receiver',
+      db: postgres,
+      docBaseOptions: {
+        schema: {
+          tags: ['receiver'],
+        },
+      },
+    } as RouteRegisterOptions)
+
+    instance.register(crowdfundingRoutes, {
+      prefix: '/crowdfunding',
+      db: postgres,
+      docBaseOptions: {
+        schema: {
+          tags: ['crowdfunding'],
+        },
+      },
+    } as RouteRegisterOptions)
+
+    instance.register(depositRoutes, {
+      prefix: '/deposit',
+      db: postgres,
+      docBaseOptions: {
+        schema: {
+          tags: ['deposit'],
+        },
+      },
+    } as RouteRegisterOptions)
+
+    done()
+  })
+
+  //registering cron jobs
   registerCrons(postgres)
 
   try {
