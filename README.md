@@ -1,3 +1,8 @@
+# TODO
+
+- Add cache;
+- Add reset passoword auth function;
+
 # Crowdfunding API
 - A pretend crowdfunding api with some trading rules, where you can create a account, open crowdfundings and receive deposits.
 
@@ -43,4 +48,5 @@ After this you'll be able to see the logs in the terminal
 
 - After started the project, access [http://localhost:9000/docs](http://localhost:9000/docs) and you must have access at the routes:
 
-![image](https://github.com/brunopstephan/crowdfunding-api/assets/101269702/3e52027a-300b-45e7-b5d6-6875b5c1bbe8)
+![image](https://github.com/brunopstephan/crowdfunding-api/assets/101269702/ab9dbabe-ef47-4697-a8d3-fba1b655019b)
+
