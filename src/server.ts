@@ -4,6 +4,7 @@ import { ZodError } from 'zod'
 import formbody from '@fastify/formbody'
 import FastifySwagger from '@fastify/swagger'
 import FastifySwaggerUI from '@fastify/swagger-ui'
+import { config } from './config'
 import {
   crowdfundingRoutes,
   depositRoutes,
@@ -72,7 +73,7 @@ async function main() {
   } as RouteRegisterOptions)
 
   app.register((instance, opts, done) => {
-    if (process.env.ENV === 'production')
+    if (config.env === 'production')
       instance.addHook('preHandler', tokenValidation)
     instance.register(receiverRoutes, {
       prefix: '/receiver',
