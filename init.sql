@@ -81,6 +81,16 @@ begin
 end;
 $$;
 
+create or replace function sum_receiver_limit() 
+   returns trigger 
+   language plpgsql
+as $$
+begin
+   update receiver set crowdfundings_limit = crowdfundings_limit + 1 where id = old.receiver_id;
+   return old;
+end;
+$$;
+
 
 CREATE TRIGGER receiver_uuid_trigger
 BEFORE INSERT ON receiver
@@ -109,3 +119,7 @@ FOR EACH ROW EXECUTE PROCEDURE sum_total_amount();
 create or replace TRIGGER subtract_receiver_limit_trigger
 BEFORE INSERT ON crowdfunding
 FOR EACH ROW EXECUTE PROCEDURE subtract_receiver_limit();
+
+create or replace TRIGGER sum_receiver_limit_trigger
+BEFORE DELETE ON crowdfunding
+FOR EACH ROW EXECUTE PROCEDURE sum_receiver_limit();
