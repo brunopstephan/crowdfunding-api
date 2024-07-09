@@ -1,7 +1,7 @@
 # TODO
 
 - Add cache;
-- Add reset passoword auth function;
+- Add reset password auth function;
 
 # Crowdfunding API
 - A pretend crowdfunding api with some trading rules, where you can create a account, open crowdfundings and receive deposits.
@@ -18,7 +18,7 @@ npm i
 
 ### Build Docker image and running it
 
-This command will build the database docker image and up it, after this the database will be able to acept requests
+This command will build the database docker image and up it, after this the database will be able to accept requests
 
 ```bash
 npm run db:up
