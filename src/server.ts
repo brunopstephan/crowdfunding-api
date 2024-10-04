@@ -74,7 +74,7 @@ async function main() {
     },
   } as RouteRegisterOptions)
 
-  app.register((instance, opts, done) => {
+  app.register((instance, _, done) => {
     if (config.env === 'production')
       instance.addHook('preHandler', tokenValidation)
     instance.register(receiverRoutes, {
@@ -114,7 +114,7 @@ async function main() {
   registerCrons(postgres)
 
   try {
-    await app.listen({ port: 9000 }).then(() => {
+    await app.listen({ port: 9000, host: '0.0.0.0' }).then(() => {
       console.log('Server is running on port 9000...')
     })
   } catch (err) {

@@ -1,17 +1,34 @@
 services:
-    crowdfunding-postgres:
-        container_name: crowdfunding-postgres
-        build: .
-        image: crowdfunding-postgres:v1
+    app:
+        container_name: app
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "9000:9000"
+        depends_on:
+            - postgres
+        env_file:
+            - .env
+        environment:
+            - NODE_ENV=production
+            - POSTGRES_HOST=postgres
+    postgres:
+        container_name: postgres
+        image: bitnami/postgresql:latest
         ports:
             - "5432:5432"
-        environment:
-            - POSTGRES_USER=docker
-            - POSTGRES_PASSWORD=docker
-            - POSTGRES_DB=crowdfunding
+        env_file:
+            - .env
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
         volumes:
-            - crowdfunding:/bitnami/postgresql
+            - postgres:/bitnami/postgresql
             - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
-    crowdfunding:  
+    postgres:  
+        driver: local

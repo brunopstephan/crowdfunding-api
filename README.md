@@ -1,8 +1,3 @@
-# TODO
-
-- Add cache;
-- Add reset password auth function;
-
 # Crowdfunding API
 - A pretend crowdfunding api with some trading rules, where you can create a account, open crowdfundings and receive deposits.
 
@@ -16,37 +11,19 @@
 npm i
 ```
 
-### Build Docker image and running it
+### Run Docker
 
-This command will build the database docker image and up it, after this the database will be able to accept requests
+The application and the database runs essentially in Docker containers, so you may have it installed to run this project.
 
-```bash
-npm run db:up
-```
-
-### Start the project
-
-With the docker image builded and the container running, just type
+The command below will build and up the docker image.
 
 ```bash
-npm run start
+npm run compose
 ```
-Or
-
-```bash
-npm run dev
-```
-
-For watch mode
-
-After this you'll be able to see the logs in the terminal
-
-![image](https://github.com/brunopstephan/crowdfunding-api/assets/101269702/6c4f98e9-5878-411a-ad3d-c62fb22f3d3c)
-
 
 ## Usage
 
-- After started the project, access [http://localhost:9000/docs](http://localhost:9000/docs) and you must have access at the routes:
+- After building and running the containers, you'll be able to access [the documentation](http://localhost:9000/docs):
 
 ![image](https://github.com/brunopstephan/crowdfunding-api/assets/101269702/ab9dbabe-ef47-4697-a8d3-fba1b655019b)
 
